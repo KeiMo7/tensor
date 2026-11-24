@@ -191,6 +191,18 @@ type MatMuler interface {
 	MatMul(a, b, preallocated Tensor) error
 }
 
+// BatchedMatMuler is any engine that can perform a batched matrix multiplication.
+//
+// A batched matrix multiplication treats the leading dimensions of a and b
+// (which must both be at least 3-dimensional) as batch dimensions. Every batch
+// is multiplied independently as a 2D matrix multiplication. Operands whose
+// batch dimension has size 1 are broadcast across the batches of the other
+// operand; the operands are addressed in place through their strides, and no
+// part of either input is ever copied.
+type BatchedMatMuler interface {
+	MatMulBatched(a, b, preallocated Tensor) error
+}
+
 // MatVecMuler is any engine that can perform matrix vector multiplication
 type MatVecMuler interface {
 	MatVecMul(a, b, preallocated Tensor) error
